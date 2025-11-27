@@ -15,19 +15,27 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 // Logo Component
-const Logo = ({ className = "", darkMode = false }) => (
-  <Link to="/" className={`flex items-center gap-2 ${className}`} data-testid="logo">
-    <img 
-      src="https://customer-assets.emergentagent.com/job_nexovent-site/artifacts/pt3tv7vx_logo.png" 
-      alt="Nexovent Labs Logo" 
-      className="h-10 w-10 object-contain"
-    />
-    <span className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-      <span className="text-orange-500">Nexovent</span>
-      <span className={darkMode ? "text-white" : "text-gray-900"}> Labs</span>
-    </span>
-  </Link>
-);
+const Logo = ({ className = "", darkMode = false, scrolled = false }) => {
+  // On mobile/tablet: white when not scrolled, black when scrolled
+  // On desktop: always black
+  const labsColor = scrolled 
+    ? "text-gray-900" 
+    : "lg:text-gray-900 text-white";
+  
+  return (
+    <Link to="/" className={`flex items-center gap-2 ${className}`} data-testid="logo">
+      <img 
+        src="https://customer-assets.emergentagent.com/job_nexovent-site/artifacts/pt3tv7vx_logo.png" 
+        alt="Nexovent Labs Logo" 
+        className="h-10 w-10 object-contain"
+      />
+      <span className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+        <span className="text-orange-500">Nexovent</span>
+        <span className={labsColor}> Labs</span>
+      </span>
+    </Link>
+  );
+};
 
 // ScrollToTop Component - scrolls to top on route change
 const ScrollToTop = () => {
@@ -100,7 +108,7 @@ const Navigation = () => {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-transparent'}`} data-testid="navigation">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Logo />
+          <Logo scrolled={scrolled} />
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
